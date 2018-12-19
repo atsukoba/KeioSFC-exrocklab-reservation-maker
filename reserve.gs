@@ -6,13 +6,13 @@ http://rock.sfc.keio.ac.jp
 
 function myFunction(e){
   //initialize
-  let cal = CalendarApp.getCalendarById('exrocklab@gmail.com');
-  let itemResponses = e.response.getItemResponses();
-  let bandName;
-  let playerName;
-  let reserverName;
-  let practiceDate;
-  const periodTime = {
+  var cal = CalendarApp.getCalendarById('exrocklab@gmail.com');
+  var itemResponses = e.response.getItemResponses();
+  var bandName;
+  var playerName;
+  var reserverName;
+  var practiceDate;
+  var periodTime = {
         "1限" : ["9:24:00" , "10:56:00"],
         "2限" : ["11:09:00", "12:41:00"],
         "3限" : ["12:59:00", "14:31:00"],
@@ -22,15 +22,15 @@ function myFunction(e){
         "7限" : ["19:44:00", "21:16:00"],
         "0限" : ["7:59:00" , "9:16:00"]
       };
-  let isReserved = false;
-  let description = "";
+  var isReserved = false;
+  var description = "";
 
   //check response from Google Form (部室予約フォーム)
-  for (let i = 0; i < itemResponses.length; i++) {
+  for (var i = 0; i < itemResponses.length; i++) {
 
-    let itemResponse = itemResponses[i];
-    let question = itemResponse.getItem().getTitle();
-    let answer = itemResponse.getResponse();
+    var itemResponse = itemResponses[i];
+    var question = itemResponse.getItem().getTitle();
+    var answer = itemResponse.getResponse();
 
     if (question == "バンド・個人名") { // Answer 1
       playerName = answer;
@@ -47,13 +47,13 @@ function myFunction(e){
       practiceDate = answer.replace(/-/g,'/');
     }
     else if (question == "時限") { // Answer 4
-      let period = answer;
-      let startTime;
-      let endTime;
+      var period = answer;
+      var startTime;
+      var endTime;
       timelist = periodTime[period];
       startTime = practiceDate + " " + timelist[0];
       endTime = practiceDate + " " + timelist[1];
-      let events = cal.getEvents(new Date(startTime), new Date(endTime));
+      var events = cal.getEvents(new Date(startTime), new Date(endTime));
       // カレンダーを時刻で取得し, 無だった(イベントごと削除されていた)ら新しく作成する。
       // 取得する幅の時刻は1分多いので，開始/終了時刻を1分ずつ引く
       if (events == []) {
@@ -79,7 +79,7 @@ function myFunction(e){
       if (isReserved == false) {
         reserverName = answer;
         description = "予約者：" + reserverName;
-        let events = cal.getEvents(new Date(startTime), new Date(endTime));
+        var events = cal.getEvents(new Date(startTime), new Date(endTime));
         events[0].setDescription(description);
       }
     }
@@ -87,14 +87,14 @@ function myFunction(e){
       if (isReserved == false) {
         memo = answer;
         description += "\nメモ：" + memo;
-        let events = cal.getEvents(new Date(startTime), new Date(endTime));
+        var events = cal.getEvents(new Date(startTime), new Date(endTime));
         events[0].setDescription(description);
       }
     }
     else if (question == 'カレンダーカラー') { // Answer 7
       if (isReserved == false) {
         idx = answer.split(".")[0];
-        let events = cal.getEvents(new Date(startTime), new Date(endTime));
+        var events = cal.getEvents(new Date(startTime), new Date(endTime));
         events[0].setColor(idx);
         description += "\nバンドカラー：" + idx;
         events[0].setDescription(description);
